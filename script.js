@@ -10,17 +10,29 @@ function readColor() {
   const thirdSet = theColor.substring(5);
   colorSelector.addEventListener("change", readColor);
   changeToRGB(firstSet, secondSet, thirdSet);
+  showHex(theColor);
+  console.log(changeToRGB(firstSet, secondSet, thirdSet));
+  showRGB(changeToRGB(firstSet, secondSet, thirdSet));
+  changeToHSL(changeToRGB(firstSet, secondSet, thirdSet));
+  showHSL(changeToHSL(changeToRGB(firstSet, secondSet, thirdSet)));
 }
 
 function changeToRGB(valR, valG, valB) {
   let r = parseInt(valR, 16);
   let g = parseInt(valG, 16);
   let b = parseInt(valB, 16);
-  console.log(r, g, b);
-  changeToHSL(r, g, b);
+  return { r, g, b };
 }
 
-function changeToHSL(r, g, b) {
+function changeToHSL(rgbValue) {
+  let r = rgbValue.r;
+  let g = rgbValue.g;
+  let b = rgbValue.b;
+
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
   let h, s, l;
 
   const min = Math.min(r, g, b);
@@ -40,7 +52,7 @@ function changeToHSL(r, g, b) {
     h = h + 360;
   }
 
-  l = (min + max) / 2;
+  Math.floor((l = (min + max) / 2));
 
   if (max === 0 || min === 1) {
     s = 0;
@@ -48,8 +60,29 @@ function changeToHSL(r, g, b) {
     s = (max - l) / Math.min(l, 1 - l);
   }
   // multiply s and l by 100 to get the value in percent, rather than [0,1]
-  s *= 100;
-  l *= 100;
+  Math.floor((s *= 100));
+  Math.floor((l *= 100));
 
   console.log("hsl(%f,%f%,%f%)", h, s, l);
+  return { h, s, l };
+}
+
+function showHex(color) {
+  document.querySelector("#hex").textContent = color;
+}
+
+function showRGB(theRGBValues) {
+  let r = theRGBValues.r;
+  let g = theRGBValues.g;
+  let b = theRGBValues.b;
+
+  document.querySelector("#rgb").textContent = `r:${r} g:${g} b:${b}`;
+}
+
+function showHSL(theHSLValues) {
+  let h = theHSLValues.h;
+  let s = theHSLValues.s;
+  let l = theHSLValues.l;
+
+  document.querySelector("#hsl").textContent = `h:${h}% s:${s}% l:${l}%`;
 }
