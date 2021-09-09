@@ -5,22 +5,19 @@ colorSelector.addEventListener("input", readColor);
 function readColor() {
   console.log(colorSelector.value);
   const theColor = colorSelector.value;
-  const firstSet = theColor.substring(1, 3);
-  const secondSet = theColor.substring(3, 5);
-  const thirdSet = theColor.substring(5);
-  colorSelector.addEventListener("change", readColor);
-  changeToRGB(firstSet, secondSet, thirdSet);
+  changeToRGB(theColor);
   showHex(theColor);
-  console.log(changeToRGB(firstSet, secondSet, thirdSet));
-  showRGB(changeToRGB(firstSet, secondSet, thirdSet));
-  changeToHSL(changeToRGB(firstSet, secondSet, thirdSet));
-  showHSL(changeToHSL(changeToRGB(firstSet, secondSet, thirdSet)));
+  console.log(changeToRGB(theColor));
+  showRGB(changeToRGB(theColor));
+  changeToHSL(changeToRGB(theColor));
+  showHSL(changeToHSL(changeToRGB(theColor)));
+  colorSelector.addEventListener("change", readColor);
 }
 
-function changeToRGB(valR, valG, valB) {
-  let r = parseInt(valR, 16);
-  let g = parseInt(valG, 16);
-  let b = parseInt(valB, 16);
+function changeToRGB(colorHex) {
+  let r = parseInt(colorHex.substring(1, 3), 16);
+  let g = parseInt(colorHex.substring(3, 5), 16);
+  let b = parseInt(colorHex.substring(5), 16);
   return { r, g, b };
 }
 
@@ -64,7 +61,7 @@ function changeToHSL(rgbValue) {
   Math.floor((l *= 100));
 
   console.log("hsl(%f,%f%,%f%)", h, s, l);
-  return { h, s, l };
+  return { h: Math.round(h), s: Math.round(s), l: Math.round(l) };
 }
 
 function showHex(color) {
@@ -84,5 +81,5 @@ function showHSL(theHSLValues) {
   let s = theHSLValues.s;
   let l = theHSLValues.l;
 
-  document.querySelector("#hsl").textContent = `h:${h}% s:${s}% l:${l}%`;
+  document.querySelector("#hsl").textContent = `h:${h} s:${s}% l:${l}%`;
 }
