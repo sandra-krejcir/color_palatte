@@ -8,9 +8,31 @@
   </head>
   <body>
     <input id="theColor" type="color" />
+    <select name="operator" id="operator">
+      <option value="analogous">
+        Analogous
+      </option>
+      <option value="monochromatic">
+        Monochromatic
+      </option>
+      <option value="triad">
+        Triad
+      </option>
+      <option value="complementary">
+        Complementary
+      </option>
+      <option value="compound">
+        Compound
+      </option>
+      <option value="shades">
+        Shades
+      </option>
+      </select>
     <p>Show HEX: <div id="hex"></div></p>
     <p>Show RGB: <div id="rgb"></div></p>
     <p>Show HSL: <div id="hsl"></div></p>
+    <section id="theColors">
+    </section>
     <script src="script.js"></script>
   </body>
 </html>

@@ -1,6 +1,8 @@
 "use strict";
+
 const colorSelector = document.querySelector("input");
 colorSelector.addEventListener("input", readColor);
+const operator = document.querySelector("#operator");
 
 function readColor() {
   console.log(colorSelector.value);
@@ -11,7 +13,59 @@ function readColor() {
   showRGB(changeToRGB(theColor));
   changeToHSL(changeToRGB(theColor));
   showHSL(changeToHSL(changeToRGB(theColor)));
-  colorSelector.addEventListener("change", readColor);
+  operator.addEventListener("click", getHarmony);
+  const harmony = getHarmony();
+  console.log(harmony);
+  getRandomColors(changeToHSL(changeToRGB(theColor)));
+  const newColors = getRandomColors(changeToHSL(changeToRGB(theColor)));
+  changeColors(newColors, harmony);
+  console.log(changeColors(newColors, harmony));
+}
+
+function getHarmony() {
+  if (operator.value === "analogous") {
+    return "analogous";
+  } else if (operator.value === "monochromatic") {
+    return "monochromatic";
+  } else if (operator.value === "triad") {
+    return "triad";
+  } else if (operator.value === "complementary") {
+    return "complementary";
+  } else if (operator.value === "compound") {
+    return "compound";
+  } else {
+    return "shades";
+  }
+}
+
+function getRandomColors(theMainColor) {
+  let hslObject = { h: theMainColor.h, s: theMainColor.s, l: theMainColor.l };
+  let arrayOfColors = [];
+  for (let i = 0; i < 4; i++) {
+    console.log(i);
+    arrayOfColors[i] = Object.assign({}, hslObject);
+  }
+  console.log(arrayOfColors);
+  return arrayOfColors;
+}
+
+function changeColors(theColorsArray, theHarmony) {
+  console.log(theHarmony);
+  if (theHarmony === "analogous") {
+    theColorsArray[0].h += 10;
+  } else if (theHarmony === "monochromatic") {
+    theColorsArray[1].h += 10;
+  } else if (theHarmony === "triad") {
+    theColorsArray[2].h += 10;
+  } else if (theHarmony === "complementary") {
+    theColorsArray[1].h += 50;
+  } else if (theHarmony === "compound") {
+    theColorsArray[3].h += 30;
+  } else if (theHarmony === "shades") {
+    theColorsArray[4].h += 10;
+  }
+  console.log(theColorsArray);
+  return theColorsArray;
 }
 
 function changeToRGB(colorHex) {
