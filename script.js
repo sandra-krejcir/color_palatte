@@ -19,6 +19,8 @@ function readColor() {
   getRandomColors(changeToHSL(changeToRGB(theColor)));
   const newColors = getRandomColors(changeToHSL(changeToRGB(theColor)));
   changeColors(newColors, harmony);
+  changeRGBtoHSL(newColors);
+  console.log(changeRGBtoHSL(newColors));
   console.log(changeColors(newColors, harmony));
 }
 
@@ -52,7 +54,7 @@ function getRandomColors(theMainColor) {
 function changeColors(theColorsArray, theHarmony) {
   console.log(theHarmony);
   if (theHarmony === "analogous") {
-    theColorsArray[0].h += 10;
+    changeAnalogous(theColorsArray);
   } else if (theHarmony === "monochromatic") {
     theColorsArray[1].h += 10;
   } else if (theHarmony === "triad") {
@@ -64,8 +66,23 @@ function changeColors(theColorsArray, theHarmony) {
   } else if (theHarmony === "shades") {
     theColorsArray[4].h += 10;
   }
-  console.log(theColorsArray);
   return theColorsArray;
+}
+
+function changeAnalogous(colorsArray) {
+  colorsArray[0].h = setInterval((colorsArray[0].h -= 10), 360);
+  colorsArray[1].h = setInterval((colorsArray[1].h += 10), 360);
+  colorsArray[2].h = setInterval((colorsArray[2].h += 20), 360);
+  colorsArray[3].h = setInterval((colorsArray[3].h += 30), 360);
+  console.log(colorsArray);
+  return colorsArray;
+}
+
+function setInterval(number, max) {
+  while (number < 0) {
+    number += max;
+  }
+  return number % max;
 }
 
 function changeToRGB(colorHex) {
@@ -136,4 +153,57 @@ function showHSL(theHSLValues) {
   let l = theHSLValues.l;
 
   document.querySelector("#hsl").textContent = `h:${h} s:${s}% l:${l}%`;
+}
+
+function changeRGBtoHSL(arrayOfNewColors) {
+  arrayOfNewColors.forEach((elm) => {
+    let h = elm.h;
+    let s = elm.s;
+    let l = elm.l;
+
+    h = h;
+    s = s / 100;
+    l = l / 100;
+
+    let c = (1 - Math.abs(2 * l - 1)) * s,
+      x = c * (1 - Math.abs(((h / 60) % 2) - 1)),
+      m = l - c / 2,
+      r = 0,
+      g = 0,
+      b = 0;
+    if (0 <= h && h < 60) {
+      r = c;
+      g = x;
+      b = 0;
+    } else if (60 <= h && h < 120) {
+      r = x;
+      g = c;
+      b = 0;
+    } else if (120 <= h && h < 180) {
+      r = 0;
+      g = c;
+      b = x;
+    } else if (180 <= h && h < 240) {
+      r = 0;
+      g = x;
+      b = c;
+    } else if (240 <= h && h < 300) {
+      r = x;
+      g = 0;
+      b = c;
+    } else if (300 <= h && h < 360) {
+      r = c;
+      g = 0;
+      b = x;
+    }
+    r = Math.round((r + m) * 255);
+    g = Math.round((g + m) * 255);
+    b = Math.round((b + m) * 255);
+
+    let RGBObject = { r, b, g };
+    arrayOfNewColors = Object.assign({}, RGBObject);
+    console.log(arrayOfNewColors);
+    return arrayOfNewColors;
+  });
+  return arrayOfNewColors;
 }
