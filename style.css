@@ -1,14 +1,20 @@
 #theColors div {
-  width: 50px;
-  height: 50px;
-  border-style: solid;
-  border-color: black;
+  width: 150px;
+  height: 150px;
   display: flex;
   flex-direction: column;
+}
+
+#theColors div :first-child {
+  margin-top: 15vw;
+}
+
+#theColors p {
+  margin-left: 1vw;
 }
 
 #theColors {
   display: flex;
   flex-direction: row;
-  column-gap: 5vw;
+  column-gap: 0.25vw;
 }
